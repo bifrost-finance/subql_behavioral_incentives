@@ -1,0 +1,24 @@
+specVersion: 0.2.0
+name: subql_behavioral_incentives
+version: 1.0.0
+description: For Bifrost behavioral incentives project
+repository: https://github.com/subquery/bifrost-subql-starter
+schema:
+  file: ./schema.graphql
+network:
+  endpoint: wss://bifrost-parachain.api.onfinality.io/public-ws
+  genesisHash: '0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed'
+  dictionary: https://api.subquery.network/sq/subquery/bifrost-parachain-dictionary
+  chaintypes:
+    file: ./dist/chaintypes.js
+dataSources:
+  - kind: substrate/Runtime
+    startBlock: 1
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleDemocracyVoting
+          kind: substrate/EventHandler
+          filter:
+            module: democracy
+            method: Voted
