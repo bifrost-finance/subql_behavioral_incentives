@@ -13,12 +13,90 @@ network:
     file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 1600000
     mapping:
       file: ./dist/index.js
       handlers:
+      # Democracy module handlers
         - handler: handleDemocracyVoting
           kind: substrate/EventHandler
           filter:
             module: democracy
             method: Voted
+      # ParachainStaking module handlers
+        - handler: handleParachainStakingDelegation
+          kind: substrate/EventHandler
+          filter:
+            module: parachainStaking
+            method: Delegation
+        - handler: handleParachainStakingDelegationIncreased
+          kind: substrate/EventHandler
+          filter:
+            module: parachainStaking
+            method: DelegationIncreased
+        - handler: handleParachainStakingDelegationDecreased
+          kind: substrate/EventHandler
+          filter:
+            module: parachainStaking
+            method: DelegationDecreased
+        - handler: handleParachainStakingDelegationRevoked
+          kind: substrate/EventHandler
+          filter:
+            module: parachainStaking
+            method: DelegationRevoked
+        # Salp and SalpLite modules handlers
+        - handler: handleSalpContributed
+          kind: substrate/EventHandler
+          filter:
+            module: salp
+            method: Contributed
+        - handler: handleSalpLiteIssued
+          kind: substrate/EventHandler
+          filter:
+            module: salpLite
+            method: Issued
+      #VstokenConversion module handlers
+        - handler: handleVstokenConversionVsbondConvertToVsksm
+          kind: substrate/EventHandler
+          filter:
+            module: vstokenConversion
+            method: VsbondConvertToVsksm
+        - handler: handleVstokenConversionVsksmConvertToVsbond
+          kind: substrate/EventHandler
+          filter:
+            module: vstokenConversion
+            method: VsksmConvertToVsbond
+      #VtokenMinting module handlers
+        - handler: handleVtokenMintingMinted
+          kind: substrate/EventHandler
+          filter:
+            module: vtokenMinting
+            method: Minted
+        - handler: handleVtokenMintingRedeemed
+          kind: substrate/EventHandler
+          filter:
+            module: vtokenMinting
+            method: Redeemed
+      #Currencies module handlers
+        - handler: handleVtokenTransferOut
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: Transferred
+       #ZenlinkProtocol module handlers
+        - handler: handleZenlinkProtocolLiquidityAdded
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: LiquidityAdded
+        - handler: handleZenlinkProtocolLiquidityRemoved
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: LiquidityRemoved
+        - handler: handleZenlinkProtocolAssetSwap
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: AssetSwap
+

@@ -23,7 +23,8 @@
     "@subql/types": "latest",
     "typescript": "^4.1.3",
     "@subql/cli": "latest",
-    "@bifrost-finance/type-definitions": "latest"
+    "@bifrost-finance/type-definitions": "latest",
+    "bignumber.js": "^9.0.1"
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts"

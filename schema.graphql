@@ -127,7 +127,7 @@ type ZenlinkLiquidity @entity {
 
   blockHeight: Int! #Block height of the Voted event
 
-  timestamp: Int!  #Timestamp of the Voted event
+  timestamp: Date!  #Timestamp of the Voted event
 }
 
 type ZenlinkVtokenSwap @entity {
@@ -197,6 +197,3 @@ type StakingExtraRewards @entity {
 
   coefficient: Float!  #Total reward pool
 }
-
-
-

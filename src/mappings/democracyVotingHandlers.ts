@@ -1,25 +1,7 @@
 import { SubstrateEvent } from "@subql/types";
-
-import {
-  Account,
-  DemocracyVoting,
-  ParachainStaking,
-  SalpContribution,
-  SlpMinting,
-  VstokenConversion,
-  VtokenTransferOut,
-  ZenlinkLiquidity,
-  ZenlinkVtokenSwap,
-  Token,
-  RewardCoefficients,
-  CampaignInfo,
-  StakingExtraRewards,
-} from "../types";
-import { Balance, AccountId } from "@polkadot/types/interfaces";
-import {
-  CurrencyId,
-  TokenSymbol,
-} from "@bifrost-finance/type-definitions/json/types.json";
+import { DemocracyVoting } from "../types";
+import { AccountId } from "@polkadot/types/interfaces";
+import { makeSureAccount } from "./utils";
 
 // Handing talbe【DemocracyVoting】, event【Voted】
 export async function handleDemocracyVoting(
@@ -28,12 +10,12 @@ export async function handleDemocracyVoting(
   const blockNumber = event.block.block.header.number.toNumber();
   //Create the record by constructing id from blockNumber + eventIndex
   const record = new DemocracyVoting(
-    `${blockNumber.toString()}${event.idx.toString()}`
+    `${blockNumber.toString()}-${event.idx.toString()}`
   );
 
   const {
     event: {
-      data: [accountRaw, _refIndex, accountVote],
+      data: [accountRaw, , accountVote],
     },
   } = event;
 
@@ -50,13 +32,4 @@ export async function handleDemocracyVoting(
   record.timestamp = event.block.timestamp;
 
   await record.save();
-}
-
-// If the account doesn't
-async function makeSureAccount(account: string): Promise<void> {
-  const checkAccount = await Account.get(account);
-
-  if (!checkAccount) {
-    await new Account(account).save();
-  }
 }
