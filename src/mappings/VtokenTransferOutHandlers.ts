@@ -1,8 +1,8 @@
-import { SubstrateEvent, SubstrateExtrinsic } from "@subql/types";
+import { SubstrateEvent } from "@subql/types";
 import { BigNumber } from "bignumber.js";
-import { Account, VtokenTransferOut } from "../types";
+import { Subtract } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
-import { makeSureAccount } from "./utils";
+import { makeSureAccount, SUBTRACT_INTERVAL, getPricision } from "./utils";
 
 // Handing talbe【Currencies】, Event【Transferred】
 export async function handleVtokenTransferOut(
@@ -12,7 +12,7 @@ export async function handleVtokenTransferOut(
   const blockNumber = event.block.block.header.number.toNumber();
   const evt = JSON.parse(JSON.stringify(event));
   //Create the record by constructing id from blockNumber + eventIndex
-  const record = new VtokenTransferOut(
+  const record = new Subtract(
     `${blockNumber.toString()}-${event.idx.toString()}`
   );
   const {
@@ -53,6 +53,12 @@ export async function handleVtokenTransferOut(
     if (vtokenIssuance > new BigNumber(0)) {
       exchangeRate = poolToken.div(vtokenIssuance);
     }
+
+    const precision = getPricision(token);
+    const base = new BigNumber(amount.toString())
+      .dividedBy(precision)
+      .multipliedBy(exchangeRate);
+
     await makeSureAccount(account);
     record.accountId = account;
     record.event = "TransferredOut";
@@ -61,6 +67,9 @@ export async function handleVtokenTransferOut(
     record.blockHeight = blockNumber;
     record.timestamp = event.block.timestamp;
     record.exchangeRate = exchangeRate.toNumber();
+    record.base = base.toNumber();
+    record.group = Math.floor(blockNumber / SUBTRACT_INTERVAL);
+
     await record.save();
   }
 }

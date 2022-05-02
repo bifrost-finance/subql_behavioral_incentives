@@ -1,4 +1,14 @@
 import { Account } from "../types";
+import { BigNumber } from "bignumber.js";
+
+// constants
+// valid intervals
+export const ADD_INTERVAL = 100;
+export const SUBTRACT_INTERVAL = 1;
+
+// token precisions
+export const TEN_ZEROS = 10000000000;
+export const TWELVE_ZEROS = 1000000000000;
 
 // If the account doesn't exist, create one in the Account table.
 export async function makeSureAccount(account: string): Promise<void> {
@@ -91,4 +101,17 @@ export function convertFromZenlinkAssetId(id: number) {
   }
 
   return { tokenType, tokenName };
+}
+
+export function getPricision(token: string) {
+  switch (token) {
+    case "BNC":
+      return new BigNumber(TWELVE_ZEROS);
+    case "KSM":
+      return new BigNumber(TWELVE_ZEROS);
+    case "DOT":
+      return new BigNumber(TEN_ZEROS);
+    default:
+      return new BigNumber(TWELVE_ZEROS);
+  }
 }

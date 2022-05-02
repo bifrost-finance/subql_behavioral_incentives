@@ -1,7 +1,13 @@
-import { makeSureAccount } from "./utils";
+import {
+  makeSureAccount,
+  getPricision,
+  ADD_INTERVAL,
+  SUBTRACT_INTERVAL,
+} from "./utils";
 import { SubstrateEvent } from "@subql/types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
-import { SlpMinting } from "../types";
+import { Add, Subtract } from "../types";
+import { BigNumber } from "bignumber.js";
 
 // Handing talbe【VtokenMinting】, Event【Minted】
 export async function handleVtokenMintingMinted(
@@ -11,9 +17,7 @@ export async function handleVtokenMintingMinted(
   let evt = JSON.parse(JSON.stringify(event));
   const blockNumber = event.block.block.header.number.toNumber();
   //   Create the record by constructing id from blockNumber + eventIndex
-  const record = new SlpMinting(
-    `${blockNumber.toString()}-${event.idx.toString()}`
-  );
+  const record = new Add(`${blockNumber.toString()}-${event.idx.toString()}`);
   const {
     event: {
       data: [address, { token: tokenName }, tokenAmount],
@@ -22,13 +26,24 @@ export async function handleVtokenMintingMinted(
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
+
+  const exchangeRate = 1;
+  const precision = getPricision(tokenName.toUpperCase());
+  const base = new BigNumber(amount.toString())
+    .dividedBy(precision)
+    .multipliedBy(exchangeRate);
+
   await makeSureAccount(account);
   record.accountId = account;
   record.event = "Minted";
-  record.token = tokenName;
+  record.token = tokenName.toUpperCase();
   record.amount = amount;
   record.blockHeight = blockNumber;
   record.timestamp = event.block.timestamp;
+  record.exchangeRate = exchangeRate;
+  record.base = base.toNumber();
+  record.group = Math.floor(blockNumber / ADD_INTERVAL);
+
   await record.save();
 }
 
@@ -40,7 +55,7 @@ export async function handleVtokenMintingRedeemed(
   let evt = JSON.parse(JSON.stringify(event));
   const blockNumber = event.block.block.header.number.toNumber();
   //   Create the record by constructing id from blockNumber + eventIndex
-  const record = new SlpMinting(
+  const record = new Subtract(
     `${blockNumber.toString()}-${event.idx.toString()}`
   );
   const {
@@ -51,12 +66,23 @@ export async function handleVtokenMintingRedeemed(
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
+
+  const exchangeRate = 1;
+  const precision = getPricision(tokenName.toUpperCase());
+  const base = new BigNumber(amount.toString())
+    .dividedBy(precision)
+    .multipliedBy(exchangeRate);
+
   await makeSureAccount(account);
   record.accountId = account;
   record.event = "Redeemed";
-  record.token = tokenName;
+  record.token = tokenName.toUpperCase();
   record.amount = amount;
   record.blockHeight = blockNumber;
   record.timestamp = event.block.timestamp;
+  record.exchangeRate = exchangeRate;
+  record.base = base.toNumber();
+  record.group = Math.floor(blockNumber / SUBTRACT_INTERVAL);
+
   await record.save();
 }

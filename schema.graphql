@@ -3,7 +3,8 @@ type Account @entity {
   id: ID! #AccountId
 }
 
-type DemocracyVoting @entity {
+
+type Add @entity {
 
   id: ID! #id is a required field
 
@@ -15,9 +16,41 @@ type DemocracyVoting @entity {
 
   amount: BigInt! #Amount of BNC voted
 
-  blockHeight: Int! #Block height of the Voted event
+  blockHeight: Int! #Block height of the event
 
-  timestamp: Date!  #Timestamp of the Voted event
+  timestamp: Date!  #Timestamp of the event
+
+  exchangeRate: Float!  #Token/Vtoken exchange rate ot the block height
+
+  base: Float! # amount / precision * exchangeRate
+
+  group: Int! # base * event_reward_coefficient * token_reward_coefficient
+
+}
+
+
+type Subtract @entity {
+
+  id: ID! #id is a required field
+
+  account: Account! #Foreign key to Account Entity
+
+  event: String! #Event name
+
+  token: String! #Token symbol
+
+  amount: BigInt! #Amount of BNC voted
+
+  blockHeight: Int! #Block height of the event
+
+  timestamp: Date!  #Timestamp of the event
+
+  exchangeRate: Float!  #Token/Vtoken exchange rate ot the block height
+
+  base: Float! # amount / precision * exchangeRate
+
+  group: Float! # base * event_reward_coefficient * token_reward_coefficient
+
 }
 
 
@@ -38,162 +71,26 @@ type ParachainStaking @entity {
   timestamp: Date!  #Timestamp of the Voted event
 }
 
-type SalpContribution @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
-}
-
-type SlpMinting @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
-}
-
-
-type VstokenConversion @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
-
-  exchangeRate: Float!  #Token/Vtoken exchange rate ot the block height
-}
-
-
-type VtokenTransferOut @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
-
-  exchangeRate: Float!  #Token/Vtoken exchange rate ot the block height
-}
-
-
-type ZenlinkLiquidity @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
-}
-
-type ZenlinkVtokenSwap @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
-
-  exchangeRate: Float!  #Token/Vtoken exchange rate ot the block height
-}
 
 ##############################################
-# Above are the tables from event scratching #
-# Below are the tables for campaigns support #
+# Support calculation tables #
 ##############################################
 
-type Token @entity {
+type PersonalTotalAccumultated @entity {
 
-  id: ID! #Token symbol
+  id: ID!
 
-  precision: BigInt! #The precision of the token.
+  accumulated: Float!  #Accumulated staking amount at the block(divided by token precision)
 }
 
-type RewardCoefficients @entity {
+
+type StakingAccumultated @entity {
 
   id: ID! #id is a required field
 
-  event: String! #Event name
+  account: Account! #Foreign key to Account Entity
 
-  token: String! #Token symbol
+  changeBlock: Int! #At which block the staking balance changed
 
-  coefficient: Float!  #Reward coefficient
-}
-
-type CampaignInfo @entity {
-
-  id: ID! #id is a required field
-
-  start: Int! #Event name
-
-  end: Int! #Token symbol
-
-  totalRewards: BigInt!  #Total reward pool
-
-  addPointsInterval: Int! #Only the highest point addition will be counted within this interval
-
-  deductPointsInterval: Int!  #Only the highest point deduction will be counted within this interval
-}
-
-type StakingExtraRewards @entity {
-
-  id: ID! #id is a required field
-
-  bottom: Int! #Range bottom
-
-  ceiling: Int! #Range ceiling
-
-  coefficient: Float!  #Total reward pool
+  accumulated: Float!  #Accumulated staking amount at the block(divided by token precision)
 }

@@ -17,12 +17,6 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-      # Democracy module handlers
-        - handler: handleDemocracyVoting
-          kind: substrate/EventHandler
-          filter:
-            module: democracy
-            method: Voted
       # ParachainStaking module handlers
         - handler: handleParachainStakingDelegation
           kind: substrate/EventHandler
@@ -44,28 +38,6 @@ dataSources:
           filter:
             module: parachainStaking
             method: DelegationRevoked
-        # Salp and SalpLite modules handlers
-        - handler: handleSalpContributed
-          kind: substrate/EventHandler
-          filter:
-            module: salp
-            method: Contributed
-        - handler: handleSalpLiteIssued
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Issued
-      #VstokenConversion module handlers
-        - handler: handleVstokenConversionVsbondConvertToVsksm
-          kind: substrate/EventHandler
-          filter:
-            module: vstokenConversion
-            method: VsbondConvertToVsksm
-        - handler: handleVstokenConversionVsksmConvertToVsbond
-          kind: substrate/EventHandler
-          filter:
-            module: vstokenConversion
-            method: VsksmConvertToVsbond
       #VtokenMinting module handlers
         - handler: handleVtokenMintingMinted
           kind: substrate/EventHandler
@@ -83,20 +55,4 @@ dataSources:
           filter:
             module: currencies
             method: Transferred
-       #ZenlinkProtocol module handlers
-        - handler: handleZenlinkProtocolLiquidityAdded
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityAdded
-        - handler: handleZenlinkProtocolLiquidityRemoved
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityRemoved
-        - handler: handleZenlinkProtocolAssetSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
 
