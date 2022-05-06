@@ -2,7 +2,7 @@ import { SubstrateEvent } from "@subql/types";
 import { makeSureAccount, getPricision } from "./utils";
 import {
   ParachainStaking,
-  StakingAccumultated,
+  StakingAccumulated,
   PersonalTotalAccumultated,
 } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
@@ -195,7 +195,7 @@ async function populateStakingAccumultated(
   blockNumber: number,
   personalAccumulated: number
 ) {
-  const accumulatedRecord = new StakingAccumultated(
+  const accumulatedRecord = new StakingAccumulated(
     `${blockNumber.toString()}-${account}`
   );
   accumulatedRecord.accountId = account;

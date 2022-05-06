@@ -1,11 +1,6 @@
 import { Account } from "../types";
 import { BigNumber } from "bignumber.js";
 
-// constants
-// valid intervals
-export const ADD_INTERVAL = 100;
-export const SUBTRACT_INTERVAL = 1;
-
 // token precisions
 export const TEN_ZEROS = 10000000000;
 export const TWELVE_ZEROS = 1000000000000;

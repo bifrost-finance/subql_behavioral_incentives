@@ -2,7 +2,7 @@ import { SubstrateEvent } from "@subql/types";
 import { BigNumber } from "bignumber.js";
 import { Subtract } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
-import { makeSureAccount, SUBTRACT_INTERVAL, getPricision } from "./utils";
+import { makeSureAccount, getPricision } from "./utils";
 
 // Handing talbe【Currencies】, Event【Transferred】
 export async function handleVtokenTransferOut(
@@ -57,7 +57,8 @@ export async function handleVtokenTransferOut(
     const precision = getPricision(token);
     const base = new BigNumber(amount.toString())
       .dividedBy(precision)
-      .multipliedBy(exchangeRate);
+      .multipliedBy(exchangeRate)
+      .multipliedBy(-1);
 
     await makeSureAccount(account);
     record.accountId = account;
@@ -68,7 +69,6 @@ export async function handleVtokenTransferOut(
     record.timestamp = event.block.timestamp;
     record.exchangeRate = exchangeRate.toNumber();
     record.base = base.toNumber();
-    record.group = Math.floor(blockNumber / SUBTRACT_INTERVAL);
 
     await record.save();
   }

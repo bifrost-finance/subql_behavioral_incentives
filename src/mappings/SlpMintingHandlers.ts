@@ -1,9 +1,4 @@
-import {
-  makeSureAccount,
-  getPricision,
-  ADD_INTERVAL,
-  SUBTRACT_INTERVAL,
-} from "./utils";
+import { makeSureAccount, getPricision } from "./utils";
 import { SubstrateEvent } from "@subql/types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
 import { Add, Subtract } from "../types";
@@ -42,7 +37,6 @@ export async function handleVtokenMintingMinted(
   record.timestamp = event.block.timestamp;
   record.exchangeRate = exchangeRate;
   record.base = base.toNumber();
-  record.group = Math.floor(blockNumber / ADD_INTERVAL);
 
   await record.save();
 }
@@ -71,7 +65,8 @@ export async function handleVtokenMintingRedeemed(
   const precision = getPricision(tokenName.toUpperCase());
   const base = new BigNumber(amount.toString())
     .dividedBy(precision)
-    .multipliedBy(exchangeRate);
+    .multipliedBy(exchangeRate)
+    .multipliedBy(-1);
 
   await makeSureAccount(account);
   record.accountId = account;
@@ -82,7 +77,6 @@ export async function handleVtokenMintingRedeemed(
   record.timestamp = event.block.timestamp;
   record.exchangeRate = exchangeRate;
   record.base = base.toNumber();
-  record.group = Math.floor(blockNumber / SUBTRACT_INTERVAL);
 
   await record.save();
 }

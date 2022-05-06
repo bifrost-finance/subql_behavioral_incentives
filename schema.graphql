@@ -24,8 +24,6 @@ type Add @entity {
 
   base: Float! # amount / precision * exchangeRate
 
-  group: Int! # base * event_reward_coefficient * token_reward_coefficient
-
 }
 
 
@@ -48,8 +46,6 @@ type Subtract @entity {
   exchangeRate: Float!  #Token/Vtoken exchange rate ot the block height
 
   base: Float! # amount / precision * exchangeRate
-
-  group: Float! # base * event_reward_coefficient * token_reward_coefficient
 
 }
 
@@ -84,7 +80,7 @@ type PersonalTotalAccumultated @entity {
 }
 
 
-type StakingAccumultated @entity {
+type StakingAccumulated @entity {
 
   id: ID! #id is a required field
 
@@ -93,4 +89,12 @@ type StakingAccumultated @entity {
   changeBlock: Int! #At which block the staking balance changed
 
   accumulated: Float!  #Accumulated staking amount at the block(divided by token precision)
+}
+
+
+type CurrentBlock @entity {
+
+  id: ID! #id is a required field
+
+  current: Int! #Current Block Number
 }
