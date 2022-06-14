@@ -4,7 +4,7 @@ import { Subtract } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
 import { makeSureAccount, getPricision } from "./utils";
 
-// Handing talbe【Currencies】, Event【Transferred】
+// Handing talbe【Tokens】, Event【Transfer】
 export async function handleVtokenTransferOut(
   event: SubstrateEvent
 ): Promise<void> {

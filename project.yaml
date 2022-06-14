@@ -56,6 +56,6 @@ dataSources:
         - handler: handleVtokenTransferOut
           kind: substrate/EventHandler
           filter:
-            module: currencies
-            method: Transferred
+            module: tokens
+            method: Transfer
 
