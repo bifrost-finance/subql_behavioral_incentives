@@ -74,28 +74,34 @@ export function convertFromZenlinkAssetId(id: number) {
       tokenName = null;
   }
 
-  let tokenType;
+  let tokenType, prefix;
   switch (c_discr) {
     case 0:
       tokenType = "Native";
+      prefix = "";
       break;
     case 1:
       tokenType = "VToken";
+      prefix = "V";
       break;
     case 2:
       tokenType = "Token";
+      prefix = "";
       break;
     case 3:
       tokenType = "Stable";
+      prefix = "";
       break;
     case 4:
       tokenType = "VSToken";
+      prefix = "VS";
       break;
     default:
       tokenType = null;
+      prefix = "";
   }
 
-  return { tokenType, tokenName };
+  return { tokenType, tokenName, prefix };
 }
 
 export function getPricision(token: string) {
