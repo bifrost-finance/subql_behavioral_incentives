@@ -80,15 +80,23 @@ dataSources:
       #     filter:
       #       module: salpLite
       #       method: Issued
-      # ZenlinkProtocol module handlers
-        - handler: handleZenlinkProtocolLiquidityAdded
-          kind: substrate/EventHandler
+      # # ZenlinkProtocol module handlers
+      #   - handler: handleZenlinkProtocolLiquidityAdded
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: zenlinkProtocol
+      #       method: LiquidityAdded
+      #   - handler: handleZenlinkProtocolLiquidityRemoved
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: zenlinkProtocol
+      #       method: LiquidityRemoved
+      # Buy KSM bond. Identified by Utility Batch call, the first call of which 
+      # is system-remark-with-event call. We get its remark param input.
+        - handler: handleSystemRemarkWithEvent
+          kind: substrate/CallHandler
           filter:
-            module: zenlinkProtocol
-            method: LiquidityAdded
-        - handler: handleZenlinkProtocolLiquidityRemoved
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityRemoved
+            module: utility
+            method: batchAll
+            success: true
 
