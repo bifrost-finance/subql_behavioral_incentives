@@ -139,7 +139,8 @@ export async function handleZenlinkProtocolLiquidityRemoved(
       const precision = getPricision(tokenName.toUpperCase());
       const base = new BigNumber(amount.toString())
         .dividedBy(precision)
-        .multipliedBy(exchangeRate);
+        .multipliedBy(exchangeRate)
+        .multipliedBy(-1);
 
       await makeSureAccount(account);
 
