@@ -145,7 +145,7 @@ export async function handleZenlinkProtocolLiquidityRemoved(
       await makeSureAccount(account);
 
       record.accountId = account;
-      record.event = "LiquidityAdded";
+      record.event = "LiquidityRemoved";
       record.token = tokenName.toUpperCase();
       record.amount = amount;
       record.blockHeight = blockNumber;
