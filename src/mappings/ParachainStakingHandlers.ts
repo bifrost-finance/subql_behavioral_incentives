@@ -151,7 +151,7 @@ export async function handleParachainStakingDelegationRevoked(
   const personalAccumulated = await populatePersonalTotalAccumultated(
     account,
     amount,
-    1
+    -1
   );
 
   // add record to the StakingAccumultated table
