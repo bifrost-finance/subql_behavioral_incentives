@@ -4,6 +4,7 @@ import { BigNumber } from "bignumber.js";
 // token precisions
 export const TEN_ZEROS = 10000000000;
 export const TWELVE_ZEROS = 1000000000000;
+export const EIGHTEEN_ZEROS = 1000000000000000000;
 
 // If the account doesn't exist, create one in the Account table.
 export async function makeSureAccount(account: string): Promise<void> {
@@ -112,6 +113,8 @@ export function getPricision(token: string) {
       return new BigNumber(TWELVE_ZEROS);
     case "DOT":
       return new BigNumber(TEN_ZEROS);
+    case "MOVR":
+      return new BigNumber(EIGHTEEN_ZEROS);
     default:
       return new BigNumber(TWELVE_ZEROS);
   }
