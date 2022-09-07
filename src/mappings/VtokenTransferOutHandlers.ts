@@ -3,6 +3,7 @@ import { BigNumber } from "bignumber.js";
 import { Subtract } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
 import { makeSureAccount, getPricision } from "./utils";
+import { u8aToString } from "@polkadot/util";
 
 // Handing talbe【Tokens】, Event【Transfer】
 export async function handleVtokenTransferOut(
@@ -46,24 +47,55 @@ export async function handleVtokenTransferOut(
     "eCSrvbA5gGMTkdAd9ttY5rNa9p84j6omq7ZsuXtsHuy5uox",
   ];
 
-  // If it is vtoken and the "to"+ "from" addresses are not vtoken swap pool account and not treasury account.
+  // If it is vtoken2 and the "to"+ "from" addresses are not vtoken swap pool account and not treasury account.
   if (
-    tokenType.startsWith("VT") &&
+    tokenType.startsWith("VTOKEN") &&
     !poolAccountList.includes((to as AccountId).toString()) &&
     !poolAccountList.includes((address as AccountId).toString())
   ) {
-    const token = Object.values(currencyId)[0].toString().toUpperCase();
-    const vtoken = "V".concat(token);
     const account = (address as AccountId).toString();
     const amount = BigInt((vtokenAmount as Balance).toString());
-    // Get VKSM issuance storage.
-    const vtokenIssuance = new BigNumber(
-      (await api.query.tokens.totalIssuance({ VToken: token })).toString()
-    );
-    // Get KSM pooltoken storage.
-    const poolToken = new BigNumber(
-      (await api.query.vtokenMinting.tokenPool({ Token: token })).toString()
-    );
+
+    let token;
+    let vtoken;
+    let vtokenIssuance;
+    let poolToken;
+    if (tokenType == "VTOKEN") {
+      token = Object.values(currencyId)[0].toString().toUpperCase();
+      vtoken = "V".concat(token);
+
+      // Get Vtoken issuance storage.
+      vtokenIssuance = new BigNumber(
+        (await api.query.tokens.totalIssuance({ VToken: token })).toString()
+      );
+      // Get token pooltoken storage.
+      poolToken = new BigNumber(
+        (await api.query.vtokenMinting.tokenPool({ Token: token })).toString()
+      );
+      // "VTOKEN2"
+    } else {
+      let tokenId = parseInt(Object.values(currencyId)[0] as string);
+
+      let metadata = await api.query.assetRegistry
+        .currencyMetadatas({ VToken2: tokenId })
+        .toString();
+
+      let meta = JSON.parse(metadata);
+      token = u8aToString(meta.symbol).toUpperCase();
+      vtoken = "V".concat(token);
+
+      // Get vtoken2 issuance storage.
+      vtokenIssuance = new BigNumber(
+        (await api.query.tokens.totalIssuance({ VToken2: tokenId })).toString()
+      );
+      // Get token2 pooltoken storage.
+      poolToken = new BigNumber(
+        (
+          await api.query.vtokenMinting.tokenPool({ Token2: tokenId })
+        ).toString()
+      );
+    }
+
     // Calculate exchange rate.
     let exchangeRate = new BigNumber(1);
     if (vtokenIssuance > new BigNumber(0)) {

@@ -3,6 +3,7 @@ import { SubstrateEvent } from "@subql/types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
 import { Add, Subtract } from "../types";
 import { BigNumber } from "bignumber.js";
+import { u8aToString } from "@polkadot/util";
 
 // Handing talbe【VtokenMinting】, Event【Minted】
 export async function handleVtokenMintingMinted(
@@ -15,9 +16,25 @@ export async function handleVtokenMintingMinted(
   const record = new Add(`${blockNumber.toString()}-${event.idx.toString()}`);
   const {
     event: {
-      data: [address, { token: tokenName }, tokenAmount],
+      data: [address, currencyId, tokenAmount],
     },
   } = evt;
+
+  // token type
+  let tokenName;
+  if (currencyId.token) {
+    tokenName = currencyId.token;
+    // token2 type
+  } else {
+    let tokenId = currencyId.token2;
+
+    let metadata = await api.query.assetRegistry
+      .currencyMetadatas({ Token2: tokenId })
+      .toString();
+
+    let meta = JSON.parse(metadata);
+    tokenName = u8aToString(meta.symbol).toUpperCase();
+  }
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
@@ -54,9 +71,25 @@ export async function handleVtokenMintingRedeemed(
   );
   const {
     event: {
-      data: [address, { token: tokenName }, tokenAmount],
+      data: [address, currencyId, tokenAmount],
     },
   } = evt;
+
+  // token type
+  let tokenName;
+  if (currencyId.token) {
+    tokenName = currencyId.token;
+    // token2 type
+  } else {
+    let tokenId = currencyId.token2;
+
+    let metadata = await api.query.assetRegistry
+      .currencyMetadatas({ Token2: tokenId })
+      .toString();
+
+    let meta = JSON.parse(metadata);
+    tokenName = u8aToString(meta.symbol).toUpperCase();
+  }
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
