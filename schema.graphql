@@ -4,7 +4,7 @@ type Account @entity {
 }
 
 
-type Add @entity {
+type AddDot @entity {
 
   id: ID! #id is a required field
 
@@ -27,7 +27,7 @@ type Add @entity {
 }
 
 
-type Subtract @entity {
+type SubtractDot @entity {
 
   id: ID! #id is a required field
 
@@ -47,24 +47,6 @@ type Subtract @entity {
 
   base: Float! # amount / precision * exchangeRate
 
-}
-
-
-type ParachainStaking @entity {
-
-  id: ID! #id is a required field
-
-  account: Account! #Foreign key to Account Entity
-
-  event: String! #Event name
-
-  token: String! #Token symbol
-
-  amount: BigInt! #Amount of BNC voted
-
-  blockHeight: Int! #Block height of the Voted event
-
-  timestamp: Date!  #Timestamp of the Voted event
 }
 
 
@@ -72,29 +54,10 @@ type ParachainStaking @entity {
 # Support calculation tables #
 ##############################################
 
-type PersonalTotalAccumultated @entity {
-
-  id: ID!
-
-  accumulated: Float!  #Accumulated staking amount at the block(divided by token precision)
-}
-
-
-type StakingAccumulated @entity {
+# polkadot-bifrost block number
+type DotCurrentBlock @entity {
 
   id: ID! #id is a required field
 
-  account: Account! #Foreign key to Account Entity
-
-  changeBlock: Int! #At which block the staking balance changed
-
-  accumulated: Float!  #Accumulated staking amount at the block(divided by token precision)
-}
-
-
-type CurrentBlock @entity {
-
-  id: ID! #id is a required field
-
-  current: Int! #Current Block Number
+  dot_current: Int! #Current Block Number
 }

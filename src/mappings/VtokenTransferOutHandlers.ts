@@ -1,6 +1,6 @@
 import { SubstrateEvent } from "@subql/types";
 import { BigNumber } from "bignumber.js";
-import { Subtract } from "../types";
+import { SubtractDot } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
 import { makeSureAccount, getPricision } from "./utils";
 import { u8aToString } from "@polkadot/util";
@@ -13,7 +13,7 @@ export async function handleVtokenTransferOut(
   const blockNumber = event.block.block.header.number.toNumber();
   const evt = JSON.parse(JSON.stringify(event));
   //Create the record by constructing id from blockNumber + eventIndex
-  const record = new Subtract(
+  const record = new SubtractDot(
     `${blockNumber.toString()}-${event.idx.toString()}`
   );
   const {

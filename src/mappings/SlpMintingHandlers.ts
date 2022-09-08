@@ -1,7 +1,7 @@
 import { makeSureAccount, getPricision } from "./utils";
 import { SubstrateEvent } from "@subql/types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
-import { Add, Subtract } from "../types";
+import { AddDot, SubtractDot } from "../types";
 import { BigNumber } from "bignumber.js";
 import { u8aToString } from "@polkadot/util";
 
@@ -13,7 +13,9 @@ export async function handleVtokenMintingMinted(
   let evt = JSON.parse(JSON.stringify(event));
   const blockNumber = event.block.block.header.number.toNumber();
   //   Create the record by constructing id from blockNumber + eventIndex
-  const record = new Add(`${blockNumber.toString()}-${event.idx.toString()}`);
+  const record = new AddDot(
+    `${blockNumber.toString()}-${event.idx.toString()}`
+  );
   const {
     event: {
       data: [address, currencyId, tokenAmount],
@@ -66,7 +68,7 @@ export async function handleVtokenMintingRedeemed(
   let evt = JSON.parse(JSON.stringify(event));
   const blockNumber = event.block.block.header.number.toNumber();
   //   Create the record by constructing id from blockNumber + eventIndex
-  const record = new Subtract(
+  const record = new SubtractDot(
     `${blockNumber.toString()}-${event.idx.toString()}`
   );
   const {
