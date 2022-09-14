@@ -1,9 +1,8 @@
-import { makeSureAccount, getPricision } from "./utils";
+import { makeSureAccount, getPricision, hex_to_ascii } from "./utils";
 import { SubstrateEvent } from "@subql/types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
 import { AddDot, SubtractDot } from "../types";
 import { BigNumber } from "bignumber.js";
-import { u8aToString } from "@polkadot/util";
 
 // Handing talbe【VtokenMinting】, Event【Minted】
 export async function handleVtokenMintingMinted(
@@ -30,12 +29,12 @@ export async function handleVtokenMintingMinted(
   } else {
     let tokenId = currencyId.token2;
 
-    let metadata = await api.query.assetRegistry
-      .currencyMetadatas({ Token2: tokenId })
-      .toString();
+    let metadata = (
+      await api.query.assetRegistry.currencyMetadatas({ Token2: tokenId })
+    ).toString();
 
     let meta = JSON.parse(metadata);
-    tokenName = u8aToString(meta.symbol).toUpperCase();
+    tokenName = hex_to_ascii(meta.symbol).toUpperCase();
   }
 
   const account = (address as AccountId).toString();
@@ -85,12 +84,12 @@ export async function handleVtokenMintingRedeemed(
   } else {
     let tokenId = currencyId.token2;
 
-    let metadata = await api.query.assetRegistry
-      .currencyMetadatas({ Token2: tokenId })
-      .toString();
+    let metadata = (
+      await api.query.assetRegistry.currencyMetadatas({ Token2: tokenId })
+    ).toString();
 
     let meta = JSON.parse(metadata);
-    tokenName = u8aToString(meta.symbol).toUpperCase();
+    tokenName = meta.symbol(meta.symbol).toUpperCase();
   }
 
   const account = (address as AccountId).toString();
