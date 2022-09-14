@@ -2,8 +2,7 @@ import { SubstrateEvent } from "@subql/types";
 import { BigNumber } from "bignumber.js";
 import { SubtractDot } from "../types";
 import { Balance, AccountId } from "@polkadot/types/interfaces";
-import { makeSureAccount, getPricision } from "./utils";
-import { u8aToString } from "@polkadot/util";
+import { makeSureAccount, getPricision, hex_to_ascii } from "./utils";
 
 // Handing talbe【Tokens】, Event【Transfer】
 export async function handleVtokenTransferOut(
@@ -76,12 +75,12 @@ export async function handleVtokenTransferOut(
     } else {
       let tokenId = parseInt(Object.values(currencyId)[0] as string);
 
-      let metadata = await api.query.assetRegistry
-        .currencyMetadatas({ VToken2: tokenId })
-        .toString();
+      let metadata = (
+        await api.query.assetRegistry.currencyMetadatas({ VToken2: tokenId })
+      ).toString();
 
       let meta = JSON.parse(metadata);
-      token = u8aToString(meta.symbol).toUpperCase();
+      token = hex_to_ascii(meta.symbol).toUpperCase();
       vtoken = "V".concat(token);
 
       // Get vtoken2 issuance storage.

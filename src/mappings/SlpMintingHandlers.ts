@@ -89,7 +89,7 @@ export async function handleVtokenMintingRedeemed(
     ).toString();
 
     let meta = JSON.parse(metadata);
-    tokenName = meta.symbol(meta.symbol).toUpperCase();
+    tokenName = hex_to_ascii(meta.symbol).toUpperCase();
   }
 
   const account = (address as AccountId).toString();
