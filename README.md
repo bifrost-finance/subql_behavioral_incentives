@@ -9,3 +9,7 @@ Run command "docker-compose down" to stop the program.
 
 ### Remove data
 Run command "sudo rm -rf .data" to clean all the data in database.
+
+### Attention
+If need to run bifrost-polkadot independently, need to uncomment the postgres service in docker-compose.yml file.
+Currentyly, it is commented out to use the same postgres with bifrost-kusama.
