@@ -115,6 +115,8 @@ export function getPricision(token: string) {
       return new BigNumber(TEN_ZEROS);
     case "MOVR":
       return new BigNumber(EIGHTEEN_ZEROS);
+    case "GLMR":
+      return new BigNumber(EIGHTEEN_ZEROS);
     default:
       return new BigNumber(TWELVE_ZEROS);
   }

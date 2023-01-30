@@ -1,13 +1,20 @@
-specVersion: 0.2.0
+specVersion: 1.0.0
 name: subql_behavioral_incentives
 version: 1.0.0
+runner:
+  node:
+    name: "@subql/node"
+    version: "*"
+  query:
+    name: "@subql/query"
+    version: "*"
 description: For Bifrost behavioral incentives project
 repository: https://github.com/subquery/bifrost-subql-starter
 schema:
   file: ./schema.graphql
 network:
   endpoint: wss://hk.p.bifrost-rpc.liebi.com/ws
-  genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
+  chainId: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
   dictionary: 
   chaintypes:
     file: ./dist/chaintypes.js
@@ -17,7 +24,7 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # Update current block
+      # Update current block
         - handler: handleBlock
           kind: substrate/BlockHandler
       #VtokenMinting module handlers
