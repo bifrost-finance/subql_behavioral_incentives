@@ -91,8 +91,8 @@ export async function handleVtokenTransferOut(
       ).toString();
 
       let meta = JSON.parse(metadata);
-      token = hex_to_ascii(meta.symbol).toUpperCase();
-      vtoken = "V".concat(token);
+      vtoken = hex_to_ascii(meta.symbol).toUpperCase();
+      token = vtoken.substring(1);
 
       // Get vtoken2 issuance storage.
       vtokenIssuance = new BigNumber(

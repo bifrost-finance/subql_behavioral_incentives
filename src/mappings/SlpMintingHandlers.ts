@@ -23,8 +23,8 @@ export async function handleVtokenMintingMinted(
 
   // token type
   let tokenName;
-  if (currencyId.token) {
-    tokenName = currencyId.token;
+  if (currencyId.token || currencyId.native) {
+    tokenName = currencyId.token ? currencyId.token : currencyId.native;
     // token2 type
   } else {
     let tokenId = currencyId.token2;
@@ -78,8 +78,8 @@ export async function handleVtokenMintingRedeemed(
 
   // token type
   let tokenName;
-  if (currencyId.token) {
-    tokenName = currencyId.token;
+  if (currencyId.token || currencyId.native) {
+    tokenName = currencyId.token ? currencyId.token : currencyId.native;
     // token2 type
   } else {
     let tokenId = currencyId.token2;
