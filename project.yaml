@@ -1,13 +1,20 @@
-specVersion: 0.2.0
+specVersion: 1.0.0
 name: subql_behavioral_incentives
 version: 1.0.0
+runner:
+  node:
+    name: "@subql/node"
+    version: "*"
+  query:
+    name: "@subql/query"
+    version: "*"
 description: For Bifrost behavioral incentives project
 repository: https://github.com/subquery/bifrost-subql-starter
 schema:
   file: ./schema.graphql
 network:
   endpoint: wss://bifrost-parachain.api.onfinality.io/public-ws
-  genesisHash: '0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed'
+  chainId: "0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed"
   dictionary: https://api.subquery.network/sq/subquery/bifrost-parachain-dictionary
   chaintypes:
     file: ./dist/chaintypes.js
@@ -17,30 +24,30 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # Update current block
+      # Update current block
         - handler: handleBlock
           kind: substrate/BlockHandler
-        # ParachainStaking module handlers
-        - handler: handleParachainStakingDelegation
-          kind: substrate/EventHandler
-          filter:
-            module: parachainStaking
-            method: Delegation
-        - handler: handleParachainStakingDelegationIncreased
-          kind: substrate/EventHandler
-          filter:
-            module: parachainStaking
-            method: DelegationIncreased
-        - handler: handleParachainStakingDelegationDecreased
-          kind: substrate/EventHandler
-          filter:
-            module: parachainStaking
-            method: DelegationDecreased
-        - handler: handleParachainStakingDelegationRevoked
-          kind: substrate/EventHandler
-          filter:
-            module: parachainStaking
-            method: DelegationRevoked
+      # # ParachainStaking module handlers
+      #   - handler: handleParachainStakingDelegation
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: parachainStaking
+      #       method: Delegation
+      #   - handler: handleParachainStakingDelegationIncreased
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: parachainStaking
+      #       method: DelegationIncreased
+      #   - handler: handleParachainStakingDelegationDecreased
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: parachainStaking
+      #       method: DelegationDecreased
+      #   - handler: handleParachainStakingDelegationRevoked
+          # kind: substrate/EventHandler
+          # filter:
+          #   module: parachainStaking
+          #   method: DelegationRevoked
       #VtokenMinting module handlers
         - handler: handleVtokenMintingMinted
           kind: substrate/EventHandler
@@ -58,44 +65,43 @@ dataSources:
           filter:
             module: tokens
             method: Transfer
-      # VstokenConversion module handlers
-        - handler: handleVstokenConversionVsbondConvertToVsksm
-          kind: substrate/EventHandler
-          filter:
-            module: vstokenConversion
-            method: VsbondConvertToVsksm
-        - handler: handleVstokenConversionVsksmConvertToVsbond
-          kind: substrate/EventHandler
-          filter:
-            module: vstokenConversion
-            method: VsksmConvertToVsbond
-      # Salp and Salp-lite modules handlers
-        - handler: handleSalpContributed
-          kind: substrate/EventHandler
-          filter:
-            module: salp
-            method: Contributed
-        - handler: handleSalpLiteIssued
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Issued
-      # ZenlinkProtocol module handlers
-        - handler: handleZenlinkProtocolLiquidityAdded
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityAdded
-        - handler: handleZenlinkProtocolLiquidityRemoved
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityRemoved
-      # Buy KSM bond. Identified by Utility Batch call.
-        - handler: handleSystemRemarkWithEvent
-          kind: substrate/CallHandler
-          filter:
-            module: utility
-            method: batchAll
-            success: true
-
+      # # VstokenConversion module handlers
+      #   - handler: handleVstokenConversionVsbondConvertToVsksm
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: vstokenConversion
+      #       method: VsbondConvertToVsksm
+      #   - handler: handleVstokenConversionVsksmConvertToVsbond
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: vstokenConversion
+      #       method: VsksmConvertToVsbond
+      # # Salp and Salp-lite modules handlers
+      #   - handler: handleSalpContributed
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: salp
+      #       method: Contributed
+      #   - handler: handleSalpLiteIssued
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: salpLite
+      #       method: Issued
+      # # ZenlinkProtocol module handlers
+      #   - handler: handleZenlinkProtocolLiquidityAdded
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: zenlinkProtocol
+      #       method: LiquidityAdded
+      #   - handler: handleZenlinkProtocolLiquidityRemoved
+      #     kind: substrate/EventHandler
+      #     filter:
+      #       module: zenlinkProtocol
+      #       method: LiquidityRemoved
+      # # Buy KSM bond. Identified by Utility Batch call.
+      #   - handler: handleSystemRemarkWithEvent
+      #     kind: substrate/CallHandler
+      #     filter:
+      #       module: utility
+      #       method: batchAll
+      #       success: true
