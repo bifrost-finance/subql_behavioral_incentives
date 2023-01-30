@@ -13,32 +13,36 @@ export async function handleVtokenMintingMinted(
   const blockNumber = event.block.block.header.number.toNumber();
   //   Create the record by constructing id from blockNumber + eventIndex
   const record = new Add(`${blockNumber.toString()}-${event.idx.toString()}`);
+
   const {
     event: {
-      data: [address, { token: tokenName }, tokenAmount],
+      data: [address, currencyId, tokenAmount],
     },
   } = evt;
 
-  const account = (address as AccountId).toString();
-  const amount = BigInt((tokenAmount as Balance).toString());
+  if (currencyId.token || currencyId.native) {
+    const tokenName = currencyId.token ? currencyId.token : currencyId.native;
+    const account = (address as AccountId).toString();
+    const amount = BigInt((tokenAmount as Balance).toString());
 
-  const exchangeRate = 1;
-  const precision = getPricision(tokenName.toUpperCase());
-  const base = new BigNumber(amount.toString())
-    .dividedBy(precision)
-    .multipliedBy(exchangeRate);
+    const exchangeRate = 1;
+    const precision = getPricision(tokenName.toUpperCase());
+    const base = new BigNumber(amount.toString())
+      .dividedBy(precision)
+      .multipliedBy(exchangeRate);
 
-  await makeSureAccount(account);
-  record.accountId = account;
-  record.event = "Minted";
-  record.token = tokenName.toUpperCase();
-  record.amount = amount;
-  record.blockHeight = blockNumber;
-  record.timestamp = event.block.timestamp;
-  record.exchangeRate = exchangeRate;
-  record.base = base.toNumber();
+    await makeSureAccount(account);
+    record.accountId = account;
+    record.event = "Minted";
+    record.token = tokenName.toUpperCase();
+    record.amount = amount;
+    record.blockHeight = blockNumber;
+    record.timestamp = event.block.timestamp;
+    record.exchangeRate = exchangeRate;
+    record.base = base.toNumber();
 
-  await record.save();
+    await record.save();
+  }
 }
 
 // Handing talbe【VtokenMinting】, Event【Redeemed】
@@ -54,9 +58,18 @@ export async function handleVtokenMintingRedeemed(
   );
   const {
     event: {
-      data: [address, { token: tokenName }, tokenAmount],
+      data: [address, currency, tokenAmount],
     },
   } = evt;
+
+  let tokenName;
+  // If it is Native BNC
+  if (JSON.stringify(currency) == `{"native":"BNC"}`) {
+    tokenName = "BNC";
+  } else {
+    const { token: tkName } = currency;
+    tokenName = tkName;
+  }
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
