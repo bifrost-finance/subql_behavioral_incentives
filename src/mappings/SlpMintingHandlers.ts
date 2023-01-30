@@ -10,14 +10,25 @@ export async function handleVtokenMintingMinted(
 ): Promise<void> {
   //   logger.info(`${event}`);
   let evt = JSON.parse(JSON.stringify(event));
+  logger.info(`${JSON.stringify(evt)}`);
   const blockNumber = event.block.block.header.number.toNumber();
   //   Create the record by constructing id from blockNumber + eventIndex
   const record = new Add(`${blockNumber.toString()}-${event.idx.toString()}`);
+
   const {
     event: {
-      data: [address, { token: tokenName }, tokenAmount],
+      data: [address, currency, tokenAmount],
     },
   } = evt;
+
+  let tokenName;
+  // If it is Native BNC
+  if (JSON.stringify(currency) == `{"native":"BNC"}`) {
+    tokenName = "BNC";
+  } else {
+    const { token: tkName } = currency;
+    tokenName = tkName;
+  }
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
@@ -54,9 +65,18 @@ export async function handleVtokenMintingRedeemed(
   );
   const {
     event: {
-      data: [address, { token: tokenName }, tokenAmount],
+      data: [address, currency, tokenAmount],
     },
   } = evt;
+
+  let tokenName;
+  // If it is Native BNC
+  if (JSON.stringify(currency) == `{"native":"BNC"}`) {
+    tokenName = "BNC";
+  } else {
+    const { token: tkName } = currency;
+    tokenName = tkName;
+  }
 
   const account = (address as AccountId).toString();
   const amount = BigInt((tokenAmount as Balance).toString());
