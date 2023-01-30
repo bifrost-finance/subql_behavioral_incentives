@@ -32,7 +32,7 @@ services:
       - ./:/app
     command:
       - -f=/app
-      - --db-schema=public
+      - --db-schema=polkadot
     healthcheck:
       test: ["CMD", "curl", "-f", "http://subquery-node:3000/ready"]
       interval: 3s
