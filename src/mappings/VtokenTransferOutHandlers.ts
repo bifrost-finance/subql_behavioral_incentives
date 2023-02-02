@@ -72,9 +72,16 @@ export async function handleVtokenTransferOut(
       (await api.query.tokens.totalIssuance({ VToken: token })).toString()
     );
     // Get KSM pooltoken storage.
-    const poolToken = new BigNumber(
-      (await api.query.vtokenMinting.tokenPool({ Token: token })).toString()
-    );
+    let poolToken;
+    if (token == "BNC") {
+      poolToken = new BigNumber(
+        (await api.query.vtokenMinting.tokenPool({ Native: token })).toString()
+      );
+    } else {
+      poolToken = new BigNumber(
+        (await api.query.vtokenMinting.tokenPool({ Token: token })).toString()
+      );
+    }
     // Calculate exchange rate.
     let exchangeRate = new BigNumber(1);
     if (vtokenIssuance > new BigNumber(0)) {
