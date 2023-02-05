@@ -38,6 +38,8 @@ export async function handleVtokenTransferOut(
   // "eCSrvaystgdffuJxPVQfmrQY3XBfm6FPSBj1nJwmT48ASum" is the VMOVR farming pool account form bifrost-kusama.
   // "eCSrvaystgdffuJxPVZ7pEK8ZMmZ7Nwg2144eZYgWdx4g6v" is the VBNC farming pool account form bifrost-kusama.
   // "eCSrvaystgdffuJxPVbKj318eoUb12vu85hWk7CQFktdf79" is the VGLMR farming pool account form bifrost-polkadot.
+  // "eCSrvaystgdffuJxPVNFYzcsVNZLG9E8TgSkUG1GcjD519E" is the vKSM/USDT LP tranding pair address.
+  // "eCSrvbA5gGLejANY2bSSPqvrYk8w4i5AVhaL2ppkvDCMYFi" is the vKSM/USDT Farming Pool address.
 
   let poolAccountList = [
     "eCSrvaystgdffuJxPVYKf8H8UYnHGNRdVGUvj1SWSiatWMq",
@@ -55,6 +57,8 @@ export async function handleVtokenTransferOut(
     "eCSrvaystgdffuJxPVQfmrQY3XBfm6FPSBj1nJwmT48ASum",
     "eCSrvaystgdffuJxPVZ7pEK8ZMmZ7Nwg2144eZYgWdx4g6v",
     "eCSrvaystgdffuJxPVbKj318eoUb12vu85hWk7CQFktdf79",
+    "eCSrvaystgdffuJxPVNFYzcsVNZLG9E8TgSkUG1GcjD519E",
+    "eCSrvbA5gGLejANY2bSSPqvrYk8w4i5AVhaL2ppkvDCMYFi",
   ];
 
   // If it is vtoken and the "to"+ "from" addresses are not vtoken swap pool account and not treasury account.
