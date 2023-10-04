@@ -24,10 +24,10 @@ services:
     restart: always
     environment:
       DB_USER: postgres
-      DB_PASS: postgres
+      DB_PASS: rainbow6-test-polkadot-db-123
       DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
+      DB_HOST: 172.19.0.35
+      DB_PORT: 30445
     volumes:
       - ./:/app
     command:
