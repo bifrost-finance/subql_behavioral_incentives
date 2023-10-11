@@ -17,39 +17,33 @@ export async function handleVtokenMintingMinted(
 
   const {
     event: {
-      data: [address, currency, tokenAmount],
+      data: [address, currencyId, tokenAmount],
     },
   } = evt;
 
-  let tokenName;
-  // If it is Native BNC
-  if (JSON.stringify(currency) == `{"native":"BNC"}`) {
-    tokenName = "BNC";
-  } else {
-    const { token: tkName } = currency;
-    tokenName = tkName;
+  if (currencyId.token || currencyId.native) {
+    const tokenName = currencyId.token ? currencyId.token : currencyId.native;
+    const account = (address as AccountId).toString();
+    const amount = BigInt((tokenAmount as Balance).toString());
+
+    const exchangeRate = 1;
+    const precision = getPricision(tokenName.toUpperCase());
+    const base = new BigNumber(amount.toString())
+      .dividedBy(precision)
+      .multipliedBy(exchangeRate);
+
+    await makeSureAccount(account);
+    record.accountId = account;
+    record.event = "Minted";
+    record.token = tokenName.toUpperCase();
+    record.amount = amount;
+    record.blockHeight = blockNumber;
+    record.timestamp = event.block.timestamp;
+    record.exchangeRate = exchangeRate;
+    record.base = base.toNumber();
+
+    await record.save();
   }
-
-  const account = (address as AccountId).toString();
-  const amount = BigInt((tokenAmount as Balance).toString());
-
-  const exchangeRate = 1;
-  const precision = getPricision(tokenName.toUpperCase());
-  const base = new BigNumber(amount.toString())
-    .dividedBy(precision)
-    .multipliedBy(exchangeRate);
-
-  await makeSureAccount(account);
-  record.accountId = account;
-  record.event = "Minted";
-  record.token = tokenName.toUpperCase();
-  record.amount = amount;
-  record.blockHeight = blockNumber;
-  record.timestamp = event.block.timestamp;
-  record.exchangeRate = exchangeRate;
-  record.base = base.toNumber();
-
-  await record.save();
 }
 
 // Handing talbe【VtokenMinting】, Event【Redeemed】
