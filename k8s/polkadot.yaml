@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: polkadot-subql
+    qcloud-app: polkadot-subql
+  name: polkadot-subql
+  namespace: rainbow
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      k8s-app: polkadot-subql
+      qcloud-app: polkadot-subql
+  template:
+    metadata:
+      labels:
+        k8s-app: polkadot-subql
+        qcloud-app: polkadot-subql
+    spec:
+      affinity: {}
+      containers:
+      - args:
+        - -f=/app
+        - --db-schema=polkadot
+        - --disable-historical=true
+        env:
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASS
+          value: postgres
+        - name: DB_DATABASE
+          value: postgres
+        - name: DB_HOST
+          value: 172.19.0.11
+        - name: DB_PORT
+          value: "15432"
+        image: harbor.liebi.com/rainbow/subql-polkadot:6
+        imagePullPolicy: Always
+        name: polkadot-subql
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+          requests:
+            cpu: 250m
+            memory: 800Mi
+      imagePullSecrets:
+      - name: harbor
