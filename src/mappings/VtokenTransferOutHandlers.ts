@@ -68,6 +68,10 @@ export async function handleVtokenTransferOut(
     "eCSrvaystgdffuJxPVLqSvWj7Qbjjd11SJEdYBQzs3FdYSk",
     "eCSrvaystgdffuJxPVSiQp5vXbGHHEbgQQQUaVb2ychB9Vz",
     "eCSrvbA5gGLejANY2XNJzg7B8cB4mBx8Rbw4tXHpY6GK5YE",
+    // 平行链主权地址,不放到commission里
+    // Moonbeam：eLHN5Pnz8aS3Dravd6Kt9LpSJiWPbSC25RS5a4wsfG6DYBX
+    // Astar：eLHN5PoPNgo5TiCZt3nGWcxda3LgKJSDVs5LnQ54FL2g7q3
+    // Interlay：eLHN5PtbY7WaZqBvEUhHHEoA1GARhZcmycRkYggRtDEZHud
     "eLHN5Pnz8aS3Dravd6Kt9LpSJiWPbSC25RS5a4wsfG6DYBX",
     "eLHN5PoPNgo5TiCZt3nGWcxda3LgKJSDVs5LnQ54FL2g7q3",
     "eLHN5PtbY7WaZqBvEUhHHEoA1GARhZcmycRkYggRtDEZHud",
